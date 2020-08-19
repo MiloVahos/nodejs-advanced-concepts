@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
+const util = require('util');
 
 const Blog = mongoose.model('Blog');
 
@@ -14,8 +15,7 @@ module.exports = app => {
   });
 
   app.get('/api/blogs', requireLogin, async (req, res) => {
-    const blogs = await Blog.find({ _user: req.user.id });
-
+    const blogs = await Blog.find({ _user: req.user.id }).cache();
     res.send(blogs);
   });
 
